@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 11-10-2022 a las 03:10:54
+-- Tiempo de generación: 12-10-2022 a las 23:27:28
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -101,6 +101,16 @@ CREATE TABLE `hlp_ticket` (
   `fecha_fin` date NOT NULL,
   `id_status_fk` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `hlp_ticket`
+--
+
+INSERT INTO `hlp_ticket` (`id`, `codigo`, `titulo`, `descripcion`, `id_usuario_solicitante`, `id_usuario_soporte`, `fecha_ini`, `fecha_fin`, `id_status_fk`) VALUES
+(1, '0000000001', 'INSIDENCIA DE PRUEBA DE INSERC', '\n                            ESTO ES UNA PRUEBA PARA LA INSERCION DE DATOS                        ', 1, 1, '2022-10-12', '2022-10-12', 1),
+(2, '0000000002', 'SEGUNDA INSIDENCIA PARA REGIST', '\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1),
+(3, '0000000003', 'SEGUNDA INSIDENCIA PARA REGIST', '\r\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1),
+(4, '0000000004', 'SEGUNDA INSIDENCIA PARA REGIST', '\r\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1);
 
 -- --------------------------------------------------------
 
@@ -230,7 +240,7 @@ ALTER TABLE `hlp_roles`
 -- AUTO_INCREMENT de la tabla `hlp_ticket`
 --
 ALTER TABLE `hlp_ticket`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `hlp_ticket_historico`
