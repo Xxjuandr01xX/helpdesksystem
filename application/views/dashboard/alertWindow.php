@@ -13,7 +13,7 @@
                                     <div class="row clearfix d-flex justify-content-center">
                                         <div class="col-md-10">
                                             <div class="alert p-4 alert-<?php echo $type;?> d-flex align-items-center" role="alert">
-                                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="<?php echo $arial_label; ?>:"><use xlink:href="#<?php echo $icon; ?>"/></svg>
+                                                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="<?php echo $arial_label; ?>:"><use xlink:href="# <?php echo $icon; ?>"/></svg>
                                                 <div>
                                                     <?php echo $mensaje; ?>
                                                 </div>

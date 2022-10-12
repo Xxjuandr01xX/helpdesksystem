@@ -27,6 +27,24 @@
             }
         }
 
+        public function set_date_sql($date){
+            ##metodo para convertir el formato de fecha a sql.
+            $sql = explode("/", $date);
+            return $sql[2]."-".$sql[1]."-".$sql[0];
+        }
+        public function set_sql_label($date){
+            $label = explode("-", $date);
+            return $label[2]."/".$label[1]."/".$label[0];
+        }
+
+        public function get_name_status($id){
+            $name = "";
+            foreach($this->db->get_where('hlp_ticket_status', ["id" => $id])->result() as $nam){
+                $name = $nam->denominacion;
+            }
+            return $name;
+        }
+
         public function examine_code_ticket($code){
             ##Funcion para verificar codigos de los tickets ingresados
             $verify = $this->db->query("SELECT * FROM hlp_ticket WHERE codigo = '$code'");
@@ -37,18 +55,24 @@
             }
         }
 
+        public function get_data_tickets(){
+            ##Funcion para devolver datos de la tabla hlp_tickets
+            return $this->db->get('hlp_ticket');
+        }
+
         public function save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client){
             ##Funcion para registrar ticket en la base de datos.
+            ##EDITAR PARA AGREGAR HISTORICO Y LISTADO DE USUARIOS
             return $insert_ticket = $this->db->insert('hlp_ticket',[
-               "id" => NULL,
-               "codigo" => $this->set_ticket_code(),
-               "titulo" => $titulo,
-               "descripcion" => $descripcion,
-               "id_usuario_solicitante" => $client,
-               "id_usuario_soporte" => $user,
-               "fec_ini" => $fec_ini,
-               "fec_fin" => $fec_fin,
-               "id_status_fk" => 1
+               "id"                     =>      NULL,
+               "codigo"                 =>      $this->set_ticket_code(),
+               "titulo"                 =>      $titulo,
+               "descripcion"            =>      $descripcion,
+               "id_usuario_solicitante" =>      1,
+               "id_usuario_soporte"     =>      1,
+               "fecha_ini"              =>      $this->set_date_sql($fec_ini),
+               "fecha_fin"              =>      $this->set_date_sql($fec_fin),
+               "id_status_fk"           =>      1
             ]);
         }
 

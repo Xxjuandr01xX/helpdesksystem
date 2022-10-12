@@ -21,21 +21,27 @@
                                     <!-- data table para listar tickets -->
                                     <div class="row clearfix d-flex justify-content-center">
                                         <div class="col-md-12">
-                                            <table class="table table-stripped table-hover">
-                                                <thead class="bg-primary text-white text-center">
-                                                    <tr>
-                                                        <td>NRO</td>
-                                                        <td>CODIGO</td>
-                                                        <td>DENOMINACION</td>
-                                                        <td>INICIO</td>
-                                                        <td>ATENDIDO POR</td>
-                                                        <td>STATUS</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="load_ticket_inf">
-                                                    
-                                                </tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table class="table table-stripped table-hover w-100" id="tickets-table">
+                                                    <thead class="bg-primary text-white text-center">
+                                                        <tr>
+                                                            <td>NRO</td>
+                                                            <td>CODIGO</td>
+                                                            <td>DENOMINACION</td>
+                                                            <td>INICIO</td>
+                                                            <td>SOLICITADO POR</td>
+                                                            <td>ASIGNADO A</td>
+                                                            <td>STATUS</td>
+                                                            <td>ACCIONES</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="load_ticket_inf" class="text-center">
+                                                        <?php foreach($tickets as $a){?>
+                                                            <?php echo $a; ?>
+                                                        <?php } ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -100,6 +106,15 @@
 
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/js/sb-admin-2.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/vendor/datatables/jquery.dataTables.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/system/funciones.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/system/jsTickets.js"></script>
 
 </body>
 

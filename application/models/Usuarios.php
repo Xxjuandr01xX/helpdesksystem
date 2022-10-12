@@ -11,5 +11,14 @@
         	return $this->db->query("SELECT * FROM hlp_usuarios WHERE usuario = '$username' AND passwd = '$password'");
         }
 
+        public function get_name_user($id_usuario){
+        	$nombre = "";
+        	$query = $this->db->get_where('hlp_usuarios',["id" => $id_usuario])->result();
+        	foreach ($query as $key) {
+        		$nombre = $key->usuario;
+        	}
+        	return $nombre;
+        }
+
 	}
 ?>
