@@ -27,6 +27,30 @@
             }
         }
 
+        public function getStatus(){
+            /**
+             * Funcion para devolver estatus de la insidencias.
+             * */
+            return $this->db->get('hlp_ticket_status')->result();
+        } 
+
+        public function getUsers(){
+            /**
+             * Funcion para devolver usuarios de la base de datos.
+             * */
+            return $this->db->get('hlp_usuarios')->result();
+        }       
+
+        public function drop($cod){
+            /**
+             * funcion para eliminar un ticket de la base de datos
+             * */
+            //$sql_ticket = "SELECT * FROM hlp_ticket WHERE codigo = ".$cod;
+            return $this->db->delete('hlp_ticket', [
+                "codigo" => $cod
+            ]);
+        }
+
         public function set_date_sql($date){
             ##metodo para convertir el formato de fecha a sql.
             $sql = explode("/", $date);

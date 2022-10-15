@@ -66,17 +66,41 @@
                                                     <label class="input-group-text" for="inputGroupSelect01"><span class = "fas fa-fw fa-user"></span></label>
                                                     <select class="form-select" id="user_select" name="user_select">
                                                         <option value="0">SELECCIONAR USUARIO</option>
+                                                        <?php foreach($usuarios as $usr){ ?>
+                                                            <?php if($usr->id_rol_fk == 1 || $usr->id_rol_fk == 3){ ?>
+                                                                <option value="<?php echo $usr->id?>"><?php echo $usr->usuario?></option>
+                                                            <?php } ?>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-5">
                                                 <div class="input-group mb-3">
-                                                    <label class="input-group-text" for="inputGroupSelect01"><span class = "fas fa-fw fa-user"></span></label>
+                                                    <label class="input-group-text" for="inputGroupSelect02"><span class = "fas fa-fw fa-user"></span></label>
                                                     <select class="form-select" id="client_select" name="client_select">
                                                         <option value="0">SELECCIONAR CLIENTE</option>
+                                                        <?php foreach($usuarios as $usr){ ?>
+                                                            <?php if($usr->id_rol_fk == 2){ ?>
+                                                                <option value="<?php echo $usr->id?>"><?php echo $usr->usuario?></option>
+                                                            <?php } ?>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    <!---->
+                                    <br>
+
+                                    <!--Estatus de la insidencia-->
+                                        <div class="row clearfix d-flex justify-content-center">
+                                            <div class="col-md-10">
+                                                <select name="estatus_select" class="form-select p-2 w-100">
+                                                    <option value="0" selected>SELECCIONE ESTATUS</option>
+                                                    <?php foreach ($status as $sts) { ?>
+                                                        <option value="<?php echo $sts->id?>"><?php echo $sts->denominacion; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                     <!---->

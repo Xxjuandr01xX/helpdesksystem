@@ -16,6 +16,9 @@ class Tickets extends CI_Controller {
 	}
 
 	public function set_border_row($id_status){
+		/**
+		 * Funcion para marcar bordes de una celda
+		 * */
 		$border_class = "";
 		if($id_status == 1){
 			$border_class = "border-left-warning";
@@ -31,6 +34,9 @@ class Tickets extends CI_Controller {
 	}
 
 	public function set_btn_status($id_status){
+		/**
+		 * Funcion para crear un boton con el status de la insidencia.
+		 * */
 		$this->load->model("ticketsModel");
 		$btn = "";
 		if($id_status == 1){
@@ -73,7 +79,7 @@ class Tickets extends CI_Controller {
 			$tableString .= "<td>".
 				"<div class='btn-group rounded-pill'>".
 					"<a href = '".base_url()."index.php/tickets/asig_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-exchange-alt'></a>".
-					"<a href = '".base_url()."index.php/tickets/rm_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
+					"<a href = '".base_url()."index.php/tickets/rm_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
 					"<a href = '".base_url()."index.php/tickets/edit_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
 				"</div>"
 			."</td>";
@@ -82,13 +88,41 @@ class Tickets extends CI_Controller {
 		}
 		####Cargando la vista 
 		$this->load->view('tickets/list',[
-			"pagina" => "GESTION DE TICKETS",
-			"tickets" => $resultSet
+			"pagina"  => "GESTION DE TICKETS",
+			"tickets" => $resultSet,
 		]);
+	}
+
+	public function rm_ticket($cod){
+		/**
+		 *  Funcion para desplegar vista de alerta para eliminar ticket
+		 * */
+		$cod_ticket = $this->input->get('cod');
+		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
+		$this->load->view('dashboard/sidebar');
+		//$this->validate_session_menu($this->session->rol);
+		$this->load->view('dashboard/menuAdministrador');
+		$this->load->view('dashboard/topbar',[
+			"username" => $this->session->usuario,
+			"codigo"   => $cod
+		]);
+		$this->load->view('tickets/remove_alert',["pagina"  => "ELIMINAR TICKET"]);
+	}
+
+	public function drop_ticket($cod){
+		$this->load->model('ticketsModel');
+		if($this->ticketsModel->drop($cod) == true){
+			$this->index();
+		}else{
+			$this->alert_window('danger', 'Error al eliminar ticket', 'info-fill', 'Danger');
+		}
 	}
 
 	
 	public function save_ticket(){
+		/**
+		 * falta crear el enlace de la demas campos.
+		 * */
 		$this->load->model('ticketsModel');
 		$titulo  	  = $this->input->post('titulo');
 		$fec_ini 	  = $this->input->post('fec_ini');
@@ -140,6 +174,7 @@ class Tickets extends CI_Controller {
 	}
 
 	public function newTicket(){
+		$this->load->model('ticketsModel');
 		####metodo para desplegar la pagina principal
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
@@ -149,7 +184,9 @@ class Tickets extends CI_Controller {
 			"username" => $this->session->usuario
 		]);
 		$this->load->view('tickets/new-ticket',[
-			"pagina" => "REGISTRAR UN NUEVO TICKET"
+			"pagina" => "REGISTRAR UN NUEVO TICKET",
+			"status"  => $this->ticketsModel->getStatus(),
+			"usuarios" => $this->ticketsModel->getUsers()
 		]);	
 	}
 }
