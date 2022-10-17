@@ -84,20 +84,72 @@
             return $this->db->get('hlp_ticket');
         }
 
-        public function save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client){
+        public function getTicketById($cod){
+            return $this->db->get_where('hlp_ticket',[
+                "codigo" => $cod
+            ])->result();
+        }
+
+        public function save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client,$sts){
             ##Funcion para registrar ticket en la base de datos.
-            ##EDITAR PARA AGREGAR HISTORICO Y LISTADO DE USUARIOS
-            return $insert_ticket = $this->db->insert('hlp_ticket',[
+            $insert_ticket = $this->db->insert('hlp_ticket',[
                "id"                     =>      NULL,
                "codigo"                 =>      $this->set_ticket_code(),
                "titulo"                 =>      $titulo,
                "descripcion"            =>      $descripcion,
-               "id_usuario_solicitante" =>      1,
-               "id_usuario_soporte"     =>      1,
+               "id_usuario_solicitante" =>      $client,
+               "id_usuario_soporte"     =>      $user,
                "fecha_ini"              =>      $this->set_date_sql($fec_ini),
                "fecha_fin"              =>      $this->set_date_sql($fec_fin),
-               "id_status_fk"           =>      1
+               "id_status_fk"           =>      $sts
             ]);
+
+            $insert_ticket_history = $this->db->insert('hlp_ticket_historico', [
+                "id"                   =>       NULL,
+                "id_ticket_fk"         =>       $this->db->insert_id,
+                "fech_modi"            =>       date('d/m/Y'),
+                'hora_modi'            =>       time(),
+                "id_status_fk"         =>       $sts,
+                "observacion"          =>       "----------" 
+            ]);
+
+            if($insert_ticket == true && $insert_ticket_history == true){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public function ticket_update($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client,$sts, $cod){
+            $id_ticket = '';
+            foreach($this->db->get_where('hlp_ticket', ["codigo" => $cod])->result() as $ticket){
+                $id_ticket = $ticket->id;
+            }
+
+            $update_ticket = $this->db->update('hlp_ticket',[
+               "titulo"                 =>      $titulo,
+               "descripcion"            =>      $descripcion,
+               "id_usuario_solicitante" =>      $client,
+               "id_usuario_soporte"     =>      $user,
+               "fecha_ini"              =>      $this->set_date_sql($fec_ini),
+               "fecha_fin"              =>      $this->set_date_sql($fec_fin),
+               "id_status_fk"           =>      $sts
+            ], ["codigo" => $cod]);
+
+            $insert_ticket_history = $this->db->insert('hlp_ticket_historico', [
+                "id"                    =>      NULL,
+                "id_ticket_fk"          =>      $id_ticket,
+                "fech_modi"            =>       date('d/m/Y'),
+                'hora_modi'            =>       time(),
+                "id_status_fk"         =>       $sts,
+                "observacion"          =>       "ACTUALIZACION DE INFORMACION"
+            ]);
+
+            if($update_ticket == true && $insert_ticket_history == true){
+                return true;
+            }else{
+                return false;
+            }
         }
 
 	}

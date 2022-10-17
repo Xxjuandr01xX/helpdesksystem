@@ -78,9 +78,9 @@ class Tickets extends CI_Controller {
 			$tableString .= "<td>".$this->set_btn_status($x->id_status_fk)."</td>";
 			$tableString .= "<td>".
 				"<div class='btn-group rounded-pill'>".
-					"<a href = '".base_url()."index.php/tickets/asig_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-exchange-alt'></a>".
+					"<a href = '".base_url()."index.php/tickets/hist_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
 					"<a href = '".base_url()."index.php/tickets/rm_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
-					"<a href = '".base_url()."index.php/tickets/edit_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
+					"<a href = '".base_url()."index.php/tickets/edit_ticket/".$x->codigo."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
 				"</div>"
 			."</td>";
 			$tableString .= "</tr>";
@@ -91,6 +91,59 @@ class Tickets extends CI_Controller {
 			"pagina"  => "GESTION DE TICKETS",
 			"tickets" => $resultSet,
 		]);
+	}
+
+	public function edit_ticket($cod){
+		$this->load->model('ticketsModel');
+		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
+		$this->load->view('dashboard/sidebar');
+		//$this->validate_session_menu($this->session->rol);
+		$this->load->view('dashboard/menuAdministrador');
+		$this->load->view('dashboard/topbar',[
+			"username" => $this->session->usuario,
+			"codigo"   => $cod
+		]);
+		$this->load->view('tickets/edit-ticket',[
+			"cod"      => $cod,
+			"pagina"   => "ACTUALIZAR INFORMACION DE TICKET",
+			"ticket"   => $this->ticketsModel->getTicketById($cod),
+			"status"   => $this->ticketsModel->getStatus(),
+			"usuarios" => $this->ticketsModel->getUsers()
+		]);
+	}
+
+	public function update_ticket($cod){
+		$this->load->model('ticketsModel');
+		$titulo  	  = $this->input->post('titulo');
+		$fec_ini 	  = $this->input->post('fec_ini');
+		$fec_fin 	  = $this->input->post('fec_fin');
+		$descripcion  = $this->input->post('description');
+		$user         = $this->input->post('user_select');
+		$client       = $this->input->post('client_select');
+		$sts          = $this->input->post('estatus_select');
+
+		if($titulo == '' || $titulo == null){
+			$this->alert_window('warning', 'Asegurece de llenar el titulo Correctamente !', 'info-fill', 'Warning');
+		}else if($fec_ini == ''){
+			$this->alert_window('warning', 'Asegurece colocar un a fecha de inicio !', 'info-fill', 'Warning');
+		}else if($fec_fin == ''){
+			$this->alert_window('warning', 'Asegurece colocar una fecha de fin !', 'info-fill', 'Warning');
+		}else if($descripcion == ''){
+			$this->alert_window('warning', 'Asegurece colocar una descripcion para el ticket !', 'info-fill', 'Warning');
+		}else if($user == 0){
+			$this->alert_window('warning', 'Debe de elegir un usuario para atender el caso !', 'info-fill', 'Warning');
+		}else if($client == 0){
+			$this->alert_window('warning', 'Debe de elegir un cliente que solicite el soporte !', 'info-fill', 'Warning');
+		}else if($sts == 0){
+			$this->alert_window('warning', 'Eliga un estatus para el soporte !', 'info-fill', 'Warning');
+		}else{
+			if($this->ticketsModel->ticket_update($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client, $sts, $cod) == true){
+				$this->index();
+			}else{
+				$this->alert_window('danger', 'Error al ingresar datos, por favor vuelva a intentar', 'exclamation-triangle-fill', 'Danger');
+			}
+		}
+
 	}
 
 	public function rm_ticket($cod){
@@ -130,6 +183,7 @@ class Tickets extends CI_Controller {
 		$descripcion  = $this->input->post('description');
 		$user         = $this->input->post('user_select');
 		$client       = $this->input->post('client_select');
+		$sts          = $this->input->post('estatus_select');
 
 
 		if($titulo == '' || $titulo == null){
@@ -140,8 +194,14 @@ class Tickets extends CI_Controller {
 			$this->alert_window('warning', 'Asegurece colocar una fecha de fin !', 'info-fill', 'Warning');
 		}else if($descripcion == ''){
 			$this->alert_window('warning', 'Asegurece colocar una descripcion para el ticket !', 'info-fill', 'Warning');
+		}else if($user == 0){
+			$this->alert_window('warning', 'Debe de elegir un usuario para atender el caso !', 'info-fill', 'Warning');
+		}else if($client == 0){
+			$this->alert_window('warning', 'Debe de elegir un cliente que solicite el soporte !', 'info-fill', 'Warning');
+		}else if($sts == 0){
+			$this->alert_window('warning', 'Eliga un estatus para el soporte !', 'info-fill', 'Warning');
 		}else{
-			if($this->ticketsModel->save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client) == true){
+			if($this->ticketsModel->save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client, $sts) == true){
 				$this->index();
 			}else{
 				$this->alert_window('danger', 'Error al ingresar datos, por favor vuelva a intentar', 'exclamation-triangle-fill', 'Danger');

@@ -2,18 +2,15 @@ $(document).ready(function(){
 	/**
 	 *  Funciones para manipular interacciones de la aplicacion
 	 ***/
-	 
 	$('#tickets-table').DataTable();
+	///Inicializacion de datetimepicker
+	$('#fec_ini').bootstrapMaterialDatePicker({
+		"clearButton" : false
+	});
 });
 
 
-function set_suport_users(){
 
-}
-
-function set_clients_users(){
-	
-}
 
 
 
