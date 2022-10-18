@@ -11,3 +11,4 @@ let set_sql_to_label = (date) => {
 	let label = date.split("-");
 	return label[2]+"/"+label[1]+"/"+label[0];
 }
+

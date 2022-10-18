@@ -1,0 +1,29 @@
+.dtp-header{
+   background-color: #0355DE !important;
+}
+
+.dtp-actual-header{
+   color: #FFF !important;
+}
+
+.dtp-date{
+   background-color: #0355DE !important;
+   color: #FFF !important;
+}
+
+.dtp-select-month-before{
+   color: #FFF !important;
+} 
+.dtp-select-month-after{
+   color: #FFF !important;
+}
+.dtp-select-year-before{
+   color: #FFF !important;
+}
+.dtp-select-year-after{
+   color: #FFF !important;
+}
+
+.dtp table.dtp-picker-days tr > td > a.selected{
+   background-color: #0355DE !important;
+}

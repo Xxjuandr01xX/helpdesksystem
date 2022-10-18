@@ -78,7 +78,7 @@ class Tickets extends CI_Controller {
 			$tableString .= "<td>".$this->set_btn_status($x->id_status_fk)."</td>";
 			$tableString .= "<td>".
 				"<div class='btn-group rounded-pill'>".
-					"<a href = '".base_url()."index.php/tickets/hist_ticket' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
+					"<a href = '".base_url()."index.php/tickets/hist_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
 					"<a href = '".base_url()."index.php/tickets/rm_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
 					"<a href = '".base_url()."index.php/tickets/edit_ticket/".$x->codigo."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
 				"</div>"
@@ -91,6 +91,33 @@ class Tickets extends CI_Controller {
 			"pagina"  => "GESTION DE TICKETS",
 			"tickets" => $resultSet,
 		]);
+	}
+
+	public function hist_ticket($cod){
+		/**
+		 * Funcion para ver detalles del ticket y ver formulario de insercion de observaciones
+		 * */
+		$this->load->model('ticketsModel');
+		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
+		$this->load->view('dashboard/sidebar');
+		//$this->validate_session_menu($this->session->rol);
+		$this->load->view('dashboard/menuAdministrador');
+		$this->load->view('dashboard/topbar',[
+			"username" => $this->session->usuario,
+		]);
+		$this->load->view('tickets/observation-ticket',[
+			"cod"      => $cod,
+			"pagina"   => "OBSERVACIONES E HISTORICO DE TICKET",
+			"ticket"   => $this->ticketsModel->getTicketById($cod)
+		]);
+	}
+
+	public function insert_observation($cod){
+		/**
+		 * Funcion en construccion para insertar en la base de datos 
+		 * la observacion en la tabla de historico.
+		 * */
+		$this->alert_window('warning', 'ACTUALMENTE ESTA FUNCION SE ENCUENTRA EN CONSTRUCCION', 'info-fill', 'Warning');
 	}
 
 	public function edit_ticket($cod){
@@ -113,6 +140,9 @@ class Tickets extends CI_Controller {
 	}
 
 	public function update_ticket($cod){
+		/**
+		 * Funcion para editar el registro de un ticket en la base de datos.
+		 * */
 		$this->load->model('ticketsModel');
 		$titulo  	  = $this->input->post('titulo');
 		$fec_ini 	  = $this->input->post('fec_ini');
@@ -163,6 +193,9 @@ class Tickets extends CI_Controller {
 	}
 
 	public function drop_ticket($cod){
+		/**
+		 * Funcion para eliminar el registro de un ticket de la base de datos.
+		 * */
 		$this->load->model('ticketsModel');
 		if($this->ticketsModel->drop($cod) == true){
 			$this->index();
@@ -233,7 +266,12 @@ class Tickets extends CI_Controller {
 		));
 	}
 
+
+
 	public function newTicket(){
+		/**
+		 * Funcion para mostrar el formulario de registro de nuevo ticket
+		 * */
 		$this->load->model('ticketsModel');
 		####metodo para desplegar la pagina principal
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);

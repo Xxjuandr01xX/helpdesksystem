@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 12-10-2022 a las 23:27:28
+-- Tiempo de generación: 18-10-2022 a las 03:15:00
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -64,7 +64,8 @@ CREATE TABLE `hlp_personas` (
 --
 
 INSERT INTO `hlp_personas` (`id`, `id_nacionalidad_fk`, `dni`, `nombre`, `apellido`, `correo`, `telefono`, `direccion`, `fec_nac`) VALUES
-(1, 1, 'V-23445978', 'JUAN DIEGO', 'RINCON URANETA', 'jd.rincon021@gmail.com', '04146801859', 'AV LA LIMPIA CALLE 79E', '1994-12-13');
+(1, 1, 'V-23445978', 'JUAN DIEGO', 'RINCON URANETA', 'jd.rincon021@gmail.com', '04146801859', 'AV LA LIMPIA CALLE 79E', '1994-12-13'),
+(2, 1, 'V-24734747', 'LUIS ARTURO', 'RINCON URDANETA', 'luisgmail.com', '1414000000', 'AV DELICIAS', '2022-10-10');
 
 -- --------------------------------------------------------
 
@@ -82,7 +83,9 @@ CREATE TABLE `hlp_roles` (
 --
 
 INSERT INTO `hlp_roles` (`id`, `descripcion`) VALUES
-(1, 'ADMINISTRADOR');
+(1, 'ADMINISTRADOR'),
+(2, 'CLIENTE'),
+(3, 'SOPORTE TECNICO');
 
 -- --------------------------------------------------------
 
@@ -107,8 +110,7 @@ CREATE TABLE `hlp_ticket` (
 --
 
 INSERT INTO `hlp_ticket` (`id`, `codigo`, `titulo`, `descripcion`, `id_usuario_solicitante`, `id_usuario_soporte`, `fecha_ini`, `fecha_fin`, `id_status_fk`) VALUES
-(1, '0000000001', 'INSIDENCIA DE PRUEBA DE INSERC', '\n                            ESTO ES UNA PRUEBA PARA LA INSERCION DE DATOS                        ', 1, 1, '2022-10-12', '2022-10-12', 1),
-(2, '0000000002', 'SEGUNDA INSIDENCIA PARA REGIST', '\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1),
+(2, '0000000002', 'SEGUNDA INSIDENCIA PARA REGIST', '                                                                                                                \r\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR                                                                                                         ', 1, 1, '2022-10-13', '2022-10-12', 3),
 (3, '0000000003', 'SEGUNDA INSIDENCIA PARA REGIST', '\r\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1),
 (4, '0000000004', 'SEGUNDA INSIDENCIA PARA REGIST', '\r\n                                                    ESTO ES UTRA PRUEBA PRA VERIFICAR ', 1, 1, '2022-10-12', '2022-10-12', 1);
 
@@ -126,6 +128,13 @@ CREATE TABLE `hlp_ticket_historico` (
   `id_status_fk` int NOT NULL,
   `observacion` text COLLATE utf8mb3_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `hlp_ticket_historico`
+--
+
+INSERT INTO `hlp_ticket_historico` (`id`, `id_ticket_fk`, `fech_modi`, `hora_modi`, `id_status_fk`, `observacion`) VALUES
+(1, 2, '0000-00-00', '838:59:59', 3, 'ACTUALIZACION DE INFORMACION');
 
 -- --------------------------------------------------------
 
@@ -166,7 +175,8 @@ CREATE TABLE `hlp_usuarios` (
 --
 
 INSERT INTO `hlp_usuarios` (`id`, `usuario`, `passwd`, `id_rol_fk`) VALUES
-(1, 'admin', 'admin', 1);
+(1, 'admin', 'admin', 1),
+(2, 'lrincon', '1234', 2);
 
 --
 -- Índices para tablas volcadas
@@ -228,13 +238,13 @@ ALTER TABLE `hlp_nacionalidades`
 -- AUTO_INCREMENT de la tabla `hlp_personas`
 --
 ALTER TABLE `hlp_personas`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `hlp_roles`
 --
 ALTER TABLE `hlp_roles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `hlp_ticket`
@@ -246,7 +256,7 @@ ALTER TABLE `hlp_ticket`
 -- AUTO_INCREMENT de la tabla `hlp_ticket_historico`
 --
 ALTER TABLE `hlp_ticket_historico`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `hlp_ticket_status`
@@ -258,7 +268,7 @@ ALTER TABLE `hlp_ticket_status`
 -- AUTO_INCREMENT de la tabla `hlp_usuarios`
 --
 ALTER TABLE `hlp_usuarios`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

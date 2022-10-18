@@ -90,6 +90,10 @@
             ])->result();
         }
 
+        public function getTicketHist($id){
+
+        }
+
         public function save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client,$sts){
             ##Funcion para registrar ticket en la base de datos.
             $insert_ticket = $this->db->insert('hlp_ticket',[
@@ -139,7 +143,7 @@
             $insert_ticket_history = $this->db->insert('hlp_ticket_historico', [
                 "id"                    =>      NULL,
                 "id_ticket_fk"          =>      $id_ticket,
-                "fech_modi"            =>       date('d/m/Y'),
+                "fech_modi"            =>       set_date_sql(date('d/m/Y')),
                 'hora_modi'            =>       time(),
                 "id_status_fk"         =>       $sts,
                 "observacion"          =>       "ACTUALIZACION DE INFORMACION"

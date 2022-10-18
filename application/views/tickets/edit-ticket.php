@@ -178,11 +178,24 @@
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/system/funciones.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo base_url();?>assets/vendor/moment/moment.js"></script>
+    <script src="<?php echo base_url();?>assets/vendor/moment/moment.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/vendor/datepicket/js/bootstrap-material-datetimepicker.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/system/jsTickets.js"></script>
+
+    <script>
+        $('#fec_ini').bootstrapMaterialDatePicker({ 
+            weekStart : 0, 
+            time: false,
+            format: 'DD/MM/YYYY' 
+        });
+        $('#fec_fin').bootstrapMaterialDatePicker({ 
+            weekStart : 0, 
+            time: false,
+            format: 'DD/MM/YYYY' 
+        });
+    </script>
 
 </body>
 

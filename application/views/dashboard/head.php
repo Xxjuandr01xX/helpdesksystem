@@ -25,6 +25,7 @@
     <!--datatables-->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.css">
     <!--datetimepicker-->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendor/datepicket/css/estilosDatepicker.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendor/datepicket/css/bootstrap-material-datetimepicker.css" />
 </head>
 

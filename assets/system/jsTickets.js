@@ -4,9 +4,7 @@ $(document).ready(function(){
 	 ***/
 	$('#tickets-table').DataTable();
 	///Inicializacion de datetimepicker
-	$('#fec_ini').bootstrapMaterialDatePicker({
-		"clearButton" : false
-	});
+	
 });
 
 
