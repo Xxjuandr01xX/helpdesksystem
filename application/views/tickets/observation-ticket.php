@@ -46,11 +46,42 @@
                     <!---->
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-10">
+                            <div class="card shadow border-left-primary">
+                            <div class="card-body">
+                                <div class="row clearfix d-flex justify-content-center">
+                                    <div class="col-md-11">
+                                        <div class="table-responsive">
+                                            <table class="table table-stripped table-hover w-100 table-bordered">
+                                                <?php foreach($historico as $hist){ ?>
+                                                    <tr>
+                                                        <td class="border-left-success text-center"><b>USUARIO:</b></td>
+                                                        <td><?php echo $usuario; ?></td>
+                                                        <td><b>OBSERVACION:</b></td>
+                                                        <td><?php echo $hist->observacion; ?></td>
+                                                        <td><b>FECHA:</b></td>
+                                                        <td><?php echo date('d/m/y', strtotime($hist->fech_modi)); ?></td>
+                                                        <td><b>HORA:</b></td>
+                                                        <td><?php echo $hist->hora_modi; ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!---->
+                    <br>
+                    <!---->
+                    <div class="row clearfix d-flex justify-content-center">
+                        <div class="col-md-10">
                             <!--contenido-->
                             <div class="card shadow border-left-primary">
                                 <div class="card-body">
                                     <!--formulario de registro de nueva insidencia-->
-                                    <form action="<?php echo base_url(); ?>index.php/tickets/insert_observation" method="POST" id = "ticket_observation_form">
+                                    <form action="<?php echo base_url(); ?>index.php/tickets/insert_observation/<?php echo $cod;?>" method="POST" id = "ticket_observation_form">
                                         <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-sm-10">
                                                 <div class="input-group">
@@ -68,6 +99,9 @@
                                                 <div class="input-group">
                                                     <select name="select-estatus" class = "form-select w-100 p-2">
                                                         <option value="0"> SELECCIONE UN ESTATUS</option>
+                                                        <?php foreach($estatus as $sts){ ?>
+                                                            <option value="<?php echo $sts->id?>"><?php echo $sts->denominacion; ?></option>
+                                                        <?php } ?>
                                                     </select>
                                                 </div>
                                             </div>

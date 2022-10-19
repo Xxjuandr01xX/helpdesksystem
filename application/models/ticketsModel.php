@@ -90,8 +90,64 @@
             ])->result();
         }
 
-        public function getTicketHist($id){
+        public function ticketHist($cod){
+            $id_ticket_fk = '';
+            foreach($this->getTicketById($cod) as $tk){
+                $id_ticket_fk = $tk->id;
+            }
+            return $this->db->get_where('hlp_ticket_historico', [
+                "id_ticket_fk" => $id_ticket_fk
+            ])->result();
+        }
 
+        public function getNombreUsuarioSoporte($cod){
+            $id_usuario_fk = '';
+            $nombre_usuario = '';
+            foreach($this->getTicketById($cod) as $tk){
+                $id_usuario_fk = $tk->id_usuario_soporte;
+            }
+            foreach($this->db->get_where('hlp_usuarios', ["id" =>$id_usuario_fk] )->result() as $usr){
+                $nombre_usuario = $usr->usuario;
+            }
+            return $nombre_usuario;
+        }
+
+        public function add_observation($cod, $observation, $fecha_modi, $estatus){
+            $id_ticket_fk  = '';
+            $id_estatus_fk = '';
+            foreach($this->getTicketById($cod) as $tick){
+                $id_ticket_fk  = $tick->id;
+                $id_estatus_fk = $tick->id_status_fk; 
+            }
+            if($estatus == $id_estatus_fk){
+                return $this->db->insert('hlp_ticket_historico', [
+                    "id" => NULL,
+                    "id_ticket_fk" => $id_ticket_fk,
+                    "fech_modi"    => $this->set_date_sql($fecha_modi),
+                    "hora_modi"    => time(),
+                    "id_status_fk" => $estatus,
+                    "observacion"  => $observation
+                ]);
+            }else{
+                $insert = $this->db->insert('hlp_ticket_historico', [
+                    "id" => NULL,
+                    "id_ticket_fk" => $id_ticket_fk,
+                    "fech_modi"    => $this->set_date_sql($fecha_modi),
+                    "hora_modi"    => time('H:i:s'),
+                    "id_status_fk" => $estatus,
+                    "observacion"  => $observation
+                ]);
+
+                if($insert == true){
+                    return $this->db->update('hlp_ticket', [
+                        "id_status_fk" => $estatus
+                    ],[
+                        "id" => $id_ticket_fk 
+                    ]);
+                }else{
+                    return false;
+                }
+            }
         }
 
         public function save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client,$sts){

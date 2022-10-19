@@ -106,9 +106,12 @@ class Tickets extends CI_Controller {
 			"username" => $this->session->usuario,
 		]);
 		$this->load->view('tickets/observation-ticket',[
-			"cod"      => $cod,
-			"pagina"   => "OBSERVACIONES E HISTORICO DE TICKET",
-			"ticket"   => $this->ticketsModel->getTicketById($cod)
+			"cod"       =>  $cod,
+			"pagina"    =>  "OBSERVACIONES E HISTORICO DE TICKET",
+			"ticket"    =>  $this->ticketsModel->getTicketById($cod),
+			"estatus"   =>  $this->ticketsModel->getStatus(),
+			"historico" =>  $this->ticketsModel->ticketHist($cod),
+			"usuario"   =>  $this->ticketsModel->getNombreUsuarioSoporte($cod)
 		]);
 	}
 
@@ -117,7 +120,25 @@ class Tickets extends CI_Controller {
 		 * Funcion en construccion para insertar en la base de datos 
 		 * la observacion en la tabla de historico.
 		 * */
-		$this->alert_window('warning', 'ACTUALMENTE ESTA FUNCION SE ENCUENTRA EN CONSTRUCCION', 'info-fill', 'Warning');
+		$observacion = $this->input->post('observation-ticket');
+		$fecha_modi  = $this->input->post('fec_obs');
+		$estatus     = $this->input->post('select-estatus');
+		######################################
+		$this->load->model('ticketsModel');
+		######################################
+		if($observacion == '' || $observacion == NULL){
+			$this->alert_window('warning', 'Asegurece de agregar observaciones', 'info-fill', 'Warning');
+		}else if($fecha_modi == '' || $fecha_modi == NULL){
+			$this->alert_window('warning', 'Asegurece de agregar fecha de observacion', 'info-fill', 'Warning');
+		}else if($estatus == 0){
+			$this->alert_window('warning', 'Asegurece seleccionar un estatus', 'info-fill', 'Warning');
+		}else{
+			if($this->ticketsModel->add_observation($cod, $observacion, $fecha_modi, $estatus) == true){
+				$this->index();
+			}else{
+				$this->alert_window('danger', 'Error al agregar observacion', 'info-fill', 'Danger');
+			}
+		}
 	}
 
 	public function edit_ticket($cod){
