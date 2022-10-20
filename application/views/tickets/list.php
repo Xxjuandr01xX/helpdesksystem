@@ -8,12 +8,12 @@
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-11">
                             <!--contenido-->
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                                 <div class="card-body">
                                     <!--boton para crear nuevo ticket-->
                                     <div class="row clearfix d-flex justify-content-end">
                                         <div class="col-md-2">
-                                            <a href="<?php echo base_url(); ?>index.php/tickets/newTicket" class="btn btn-primary btn-sm rounded-0 w-100 shadow">CREAR TICKET</a>
+                                            <a href="<?php echo base_url(); ?>index.php/tickets/newTicket" class="btn btn-success btn-sm rounded-0 w-100 shadow"><span class="fa fa-plus"></span> CREAR TICKET</a>
                                         </div>
                                     </div>
                                     <br>
@@ -23,7 +23,7 @@
                                         <div class="col-md-12">
                                             <div class="table-responsive">
                                                 <table class="table table-stripped table-hover w-100" id="tickets-table">
-                                                    <thead class="bg-primary text-white text-center">
+                                                    <thead class="bg-dark text-white text-center">
                                                         <tr>
                                                             <td>NRO</td>
                                                             <td>CODIGO</td>

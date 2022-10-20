@@ -52,6 +52,45 @@ class Tickets extends CI_Controller {
 		return $btn;
 	}
 
+	public function setMenuRol($rol){
+		/**
+		 * Funcion para aplicar roles de usuario en menus
+		 * */
+		if($rol == 1){
+			//rol para usuario administrador
+			return "dashboard/menuAdministrador";
+		}else if($rol == 3){
+			// rol para usuario soporte tecnico
+			return "dashboard/menuSoporte";
+		}else if($rol == 2){
+			// rol para usuario cliente
+			return "dashboard/menuCliente";
+		}else{
+			return "NULL";
+		}
+	}
+
+	public function setTicketsOptions($rol, $ticket){
+		/**
+		 * Funcion para aplicar roles de usuarios a opciones de tickets
+		 * */
+		if($rol == 1){
+			//rol para usuario administrador
+			return "<div class='btn-group rounded-pill'>".
+						"<a href = '".base_url()."index.php/tickets/hist_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
+						"<a href = '".base_url()."index.php/tickets/rm_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
+						"<a href = '".base_url()."index.php/tickets/edit_ticket/".$ticket."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
+					"</div>";
+		}else if($rol == 2 || $rol == 3){
+			// rol para usuario soporte tecnico y clientes
+			return "<div class='btn-group rounded-pill'>".
+					"<a href = '".base_url()."index.php/tickets/hist_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
+					"</div>";
+		}else{
+			return "NULL";
+		}
+	}
+
 	public function index(){
 		$this->load->model("ticketsModel");
 		$this->load->model("Usuarios");
@@ -59,7 +98,7 @@ class Tickets extends CI_Controller {
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
 		//$this->validate_session_menu($this->session->rol);
-		$this->load->view('dashboard/menuAdministrador');
+		$this->load->view($this->setMenuRol($this->session->rol));
 		$this->load->view('dashboard/topbar',[
 			"username" => $this->session->usuario
 		]);
@@ -76,13 +115,7 @@ class Tickets extends CI_Controller {
 			$tableString .= "<td>".$this->Usuarios->get_name_user($x->id_usuario_solicitante)."</td>";
 			$tableString .= "<td>".$this->Usuarios->get_name_user($x->id_usuario_soporte)."</td>";
 			$tableString .= "<td>".$this->set_btn_status($x->id_status_fk)."</td>";
-			$tableString .= "<td>".
-				"<div class='btn-group rounded-pill'>".
-					"<a href = '".base_url()."index.php/tickets/hist_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
-					"<a href = '".base_url()."index.php/tickets/rm_ticket/".$x->codigo."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
-					"<a href = '".base_url()."index.php/tickets/edit_ticket/".$x->codigo."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
-				"</div>"
-			."</td>";
+			$tableString .= "<td>".$this->setTicketsOptions($this->session->rol, $x->codigo)."</td>";
 			$tableString .= "</tr>";
 			$resultSet[] = $tableString;
 		}
@@ -98,6 +131,7 @@ class Tickets extends CI_Controller {
 		 * Funcion para ver detalles del ticket y ver formulario de insercion de observaciones
 		 * */
 		$this->load->model('ticketsModel');
+		$this->load->model('Usuarios');
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
 		//$this->validate_session_menu($this->session->rol);
@@ -106,12 +140,15 @@ class Tickets extends CI_Controller {
 			"username" => $this->session->usuario,
 		]);
 		$this->load->view('tickets/observation-ticket',[
-			"cod"       =>  $cod,
-			"pagina"    =>  "OBSERVACIONES E HISTORICO DE TICKET",
-			"ticket"    =>  $this->ticketsModel->getTicketById($cod),
-			"estatus"   =>  $this->ticketsModel->getStatus(),
-			"historico" =>  $this->ticketsModel->ticketHist($cod),
-			"usuario"   =>  $this->ticketsModel->getNombreUsuarioSoporte($cod)
+			"cod"        =>  $cod,
+			"pagina"     =>  "OBSERVACIONES E HISTORICO DE TICKET",
+			"ticket"     =>  $this->ticketsModel->getTicketById($cod),
+			"estatus"    =>  $this->ticketsModel->getStatus(),
+			"historico"  =>  $this->ticketsModel->ticketHist($cod),
+			"usuarios"   =>  $this->Usuarios->getAll(),
+			"rol"        =>  $this->session->rol, // Rol de usuario.
+			"id_user"    =>  $this->session->id,  // id del usuario.
+			"nm_user"    =>  $this->session->usuario // nombre de usuario.
 		]);
 	}
 
@@ -123,6 +160,7 @@ class Tickets extends CI_Controller {
 		$observacion = $this->input->post('observation-ticket');
 		$fecha_modi  = $this->input->post('fec_obs');
 		$estatus     = $this->input->post('select-estatus');
+		$username    = $this->input->post('user_name');
 		######################################
 		$this->load->model('ticketsModel');
 		######################################
@@ -132,8 +170,10 @@ class Tickets extends CI_Controller {
 			$this->alert_window('warning', 'Asegurece de agregar fecha de observacion', 'info-fill', 'Warning');
 		}else if($estatus == 0){
 			$this->alert_window('warning', 'Asegurece seleccionar un estatus', 'info-fill', 'Warning');
+		}else if($username == 0){
+			$this->alert_window('warning', 'Asegurece seleccionar un usuario', 'info-fill', 'Warning');
 		}else{
-			if($this->ticketsModel->add_observation($cod, $observacion, $fecha_modi, $estatus) == true){
+			if($this->ticketsModel->add_observation($cod, $observacion, $fecha_modi, $estatus, $username) == true){
 				$this->index();
 			}else{
 				$this->alert_window('danger', 'Error al agregar observacion', 'info-fill', 'Danger');

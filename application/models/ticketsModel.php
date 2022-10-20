@@ -112,7 +112,7 @@
             return $nombre_usuario;
         }
 
-        public function add_observation($cod, $observation, $fecha_modi, $estatus){
+        public function add_observation($cod, $observation, $fecha_modi, $estatus, $username){
             $id_ticket_fk  = '';
             $id_estatus_fk = '';
             foreach($this->getTicketById($cod) as $tick){
@@ -121,21 +121,23 @@
             }
             if($estatus == $id_estatus_fk){
                 return $this->db->insert('hlp_ticket_historico', [
-                    "id" => NULL,
-                    "id_ticket_fk" => $id_ticket_fk,
-                    "fech_modi"    => $this->set_date_sql($fecha_modi),
-                    "hora_modi"    => time(),
-                    "id_status_fk" => $estatus,
-                    "observacion"  => $observation
+                    "id"            => NULL,
+                    "username"      => $username,
+                    "id_ticket_fk"  => $id_ticket_fk,
+                    "fech_modi"     => $this->set_date_sql($fecha_modi),
+                    "hora_modi"     => time(),
+                    "id_status_fk"  => $estatus,
+                    "observacion"   => $observation
                 ]);
             }else{
                 $insert = $this->db->insert('hlp_ticket_historico', [
-                    "id" => NULL,
-                    "id_ticket_fk" => $id_ticket_fk,
-                    "fech_modi"    => $this->set_date_sql($fecha_modi),
-                    "hora_modi"    => time('H:i:s'),
-                    "id_status_fk" => $estatus,
-                    "observacion"  => $observation
+                    "id"            => NULL,
+                    "username"      => $username,
+                    "id_ticket_fk"  => $id_ticket_fk,
+                    "fech_modi"     => $this->set_date_sql($fecha_modi),
+                    "hora_modi"     => time('H:i:s'),
+                    "id_status_fk"  => $estatus,
+                    "observacion"   => $observation
                 ]);
 
                 if($insert == true){

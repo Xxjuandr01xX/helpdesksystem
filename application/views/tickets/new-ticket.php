@@ -13,7 +13,7 @@
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-11">
                             <!--contenido-->
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                                 <div class="card-body">
                                     <!--formulario de registro de nueva insidencia-->
                                     <form action="<?php echo base_url(); ?>index.php/tickets/save_ticket" method="POST" id = "ticket_save_form">
@@ -110,7 +110,7 @@
                                     <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-md-10">
                                                 <div class="input-group shadow">
-                                                   <button type = "submit" class="btn btn-primary w-100 rounded-0 shadow">
+                                                   <button type = "submit" class="btn btn-success w-100 rounded-0 shadow">
                                                     <span class="fas fa-fw fa-save"></span>
                                                     REGISTRAR
                                                    </button>
@@ -162,9 +162,25 @@
     <script src="<?php echo base_url();?>assets/js/sb-admin-2.min.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/system/funciones.js"></script>
-
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/vendor/moment/moment.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/vendor/datepicket/js/bootstrap-material-datetimepicker.js"></script>
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/system/jsTickets.js"></script>
+
+    <script>
+        $('#fec_ini').bootstrapMaterialDatePicker({ 
+            weekStart : 0, 
+            time: false,
+            format: 'DD/MM/YYYY' 
+        });
+        $('#fec_fin').bootstrapMaterialDatePicker({ 
+            weekStart : 0, 
+            time: false,
+            format: 'DD/MM/YYYY' 
+        });
+    </script>
 
 </body>
 

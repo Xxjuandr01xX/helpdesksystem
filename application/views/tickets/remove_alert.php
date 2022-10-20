@@ -5,7 +5,7 @@
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-11">
                             <!--contenido-->
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                                 <div class="card-body p-4">
                                     <div class="row clearfix d-flex justify-content-center">
                                         <div class="col-md-10">

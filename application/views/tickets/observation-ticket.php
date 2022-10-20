@@ -12,7 +12,7 @@
                     <!---->
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-10">
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                             <div class="card-body">
                                 <div class="row clearfix d-flex justify-content-center">
                                     <div class="col-md-11">
@@ -46,7 +46,7 @@
                     <!---->
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-10">
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                             <div class="card-body">
                                 <div class="row clearfix d-flex justify-content-center">
                                     <div class="col-md-11">
@@ -54,14 +54,9 @@
                                             <table class="table table-stripped table-hover w-100 table-bordered">
                                                 <?php foreach($historico as $hist){ ?>
                                                     <tr>
-                                                        <td class="border-left-success text-center"><b>USUARIO:</b></td>
-                                                        <td><?php echo $usuario; ?></td>
-                                                        <td><b>OBSERVACION:</b></td>
-                                                        <td><?php echo $hist->observacion; ?></td>
-                                                        <td><b>FECHA:</b></td>
-                                                        <td><?php echo date('d/m/y', strtotime($hist->fech_modi)); ?></td>
-                                                        <td><b>HORA:</b></td>
-                                                        <td><?php echo $hist->hora_modi; ?></td>
+                                                        <td class="bg-secondary text-white text-center"><?php echo date('d/m/y', strtotime($hist->fech_modi))." ".$hist->hora_modi; ?></td>
+                                                        <td><b><?php echo $hist->observacion; ?></b></td>
+                                                        <td><b><span class="fa fa-user-circle"></span> <?php echo $hist->username; ?></b></td>
                                                     </tr>
                                                 <?php } ?>
                                             </table>
@@ -78,7 +73,7 @@
                     <div class="row clearfix d-flex justify-content-center">
                         <div class="col-md-10">
                             <!--contenido-->
-                            <div class="card shadow border-left-primary">
+                            <div class="card shadow border-left-secondary">
                                 <div class="card-body">
                                     <!--formulario de registro de nueva insidencia-->
                                     <form action="<?php echo base_url(); ?>index.php/tickets/insert_observation/<?php echo $cod;?>" method="POST" id = "ticket_observation_form">
@@ -115,7 +110,31 @@
                                                 </div>
                                             </div>
                                         </div>
-                                         <br>
+                                        <br>
+                                        <?php if($rol == 1){?>
+                                            <div class="row clearfix d-flex justify-content-center">
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <select name="user_name" class="form-select">
+                                                            <option value="0">SELECCIONAR USUARIO</option>
+                                                            <?php foreach($usuarios as $usr){ ?>
+                                                                <option value="<?php echo $usr->id?>"><?php echo $usr->usuario; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php }else{ ?>
+                                            <div class="row clearfix d-flex justify-content-center">
+                                                <div class="col-sm-10">
+                                                    <div class="input-group">
+                                                        <select name="user_name" class="form-select" disabled>
+                                                                <option value="<?php echo $id_user; ?>"><?php echo $nm_user; ?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                         <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-sm-10">
                                                 <button type = "submit" class="btn btn-success w-100 rounded-0 shadow">
