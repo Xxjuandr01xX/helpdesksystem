@@ -14,7 +14,7 @@
                                 <div class="card-body">
                                     <!--formulario de registro de nueva insidencia-->
                                    <div class="alert alert-waring p-3" role = "alert">
-                                      <h3>$mensaje</h3>
+                                      <h3><?php echo $mensaje ?></h3>
                                    </div>
                                 </div>
                             </div>

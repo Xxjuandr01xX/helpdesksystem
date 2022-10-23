@@ -66,11 +66,80 @@
             }
         }
 
+        public function nac_save($des, $cod, $phone, $doc){
+            /**
+             * Funcion para afectar la tabla de hlp_nacionalidades.
+             * */
+
+            foreach($this->get_where('hlp_usuarios', ["cod_nac" => $cod])->result() as $nac){
+                if($cod == $nac->cod_nac){
+                    return false;
+                }else{
+                     return $this->db->insert('hlp_nacionalidades', [
+                        "id"           => NULL,
+                        "cod_nac"      => $cod,
+                        "cod_tel"      => $phone,
+                        "descripcion"  => $des,
+                        "cod"          => $doc
+                    ]);
+                }
+            }
+        }
+
         public function getDataUsuarioById($id){
             /**
              * Funcion para devolder datos de usuario y persona conel id del usuario.
              * */
-            return $this->db->query("SELECT * FROM hlp_usuarios a LEFT JOIN hlp_personas b  ON a.id_persona_fk=b.id INNER JOIN hlp_roles c ON a.id_rol_fk=c.id WHERE a.id = '$id'")->result();
+            return $this->db->query("SELECT b.id_nacionalidad_fk as 'nac',
+                                            b.dni       as 'dni',
+                                            b.nombre    as 'nom',
+                                            b.apellido  as 'ape',
+                                            b.correo    as 'mail',
+                                            b.telefono  as 'telf',
+                                            b.direccion as 'dir',
+                                            b.fec_nac   as 'fec',
+                                            a.usuario   as 'usr',
+                                            a.passwd    as 'pw',
+                                            b.id        as 'id_per'
+                                    FROM hlp_usuarios a LEFT JOIN hlp_personas b  ON a.id_persona_fk=b.id INNER JOIN hlp_roles c ON a.id_rol_fk=c.id WHERE a.id = '$id'")->result();
+        }
+
+        public function user_update($cod, $nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
+            /**
+             * Funcion para actualizar informacion de usuario en la base de datos.
+             * */
+
+            $id_persona_fk = "";
+
+            foreach($this->db->get_where('hlp_usuarios', ["id" => $cod])->result() as $usr){
+                $id_persona_fk = $usr->id_persona_fk;
+            }
+
+            $update_persona = $this->db->update('hlp_personas', [
+                "id_nacionalidad_fk" => $nacionalidad,
+                "nombre" => $nombre,
+                "apellido" => $apellido,
+                "correo" => $correo,
+                "telefono" => $telefono,
+                "direccion" => $direccion,
+                "fec_nac" => $fec_nac
+            ],[
+                "id" => $id_persona_fk
+            ]);
+
+            $update_usuario = $this->db->update('hlp_usuarios', [
+                "usuario"   => $user,
+                "passwd"    => $pass,
+                "id_rol_fk" => $rol
+            ], [
+                "id" => $cod
+            ]);
+
+            if($update_persona == true && $update_usuario == true){
+                return true;
+            }else{
+                return false;
+            }
         }
 
         public function save($nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){

@@ -35,6 +35,37 @@
                 </div>
             </li>
 
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReportes"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-file-pdf"></i>
+                    <span>REPORTES</span>
+                </a>
+                <div id="collapseReportes" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="<?php echo base_url(); ?>index.php/usuarios/new">GENERAR REPORTE</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseConfig"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>CONFIGURACION</span>
+                </a>
+                <div id="collapseConfig" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="<?php echo base_url(); ?>index.php/usuarios/nac_form">NACIONALIDADES</a>
+                    </div>
+                </div>
+            </li>
+
+
             <!-- Divider -->
             <hr class="sidebar-divider">
 

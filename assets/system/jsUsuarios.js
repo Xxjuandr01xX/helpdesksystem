@@ -2,7 +2,7 @@ $(document).ready(function(){
 	/**
 	 *  Funciones para manipular interacciones de la aplicacion
 	 ***/
-	$("#dni_user").inputmask("9{1,12}");
+	$("#dni_user").inputmask("A.-9{1,12}");
 	$("#telf").inputmask("9999-9999999");
 	$("#user").inputmask("A{1,25}");
 	$("#mail").inputmask({
