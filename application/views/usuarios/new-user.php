@@ -16,96 +16,116 @@
                             <div class="card shadow border-left-secondary">
                                 <div class="card-body">
                                     <!--formulario de registro de nueva insidencia-->
-                                    <form action="<?php echo base_url(); ?>index.php/tickets/save_ticket" method="POST" id = "ticket_save_form">
-                                    <!--titulo de la insidencia-->
+                                    <form action="<?php echo base_url(); ?>index.php/usuarios/insert_user" method="POST" id = "user_save_form">
+
+                                    <!--nacionalidad-->
                                         <div class="row clearfix d-flex justify-content-center">
-                                            <div class="col-md-10">
+                                            <div class="col-md-4">
                                                 <div class="input-group shadow">
                                                     <label for="" class="input-group-text"><span class = "fas fa-fw fa-list"></span></label>
-                                                    <input type="text" name="titulo" class="form-control" placeholder="TITULO">
+                                                   <select name="select-nac" id="" class="form-select">
+                                                       <?php foreach($nacionalidades as $nac){ ?>
+                                                            <option value="<?php echo $nac->id; ?>"><?php echo $nac->cod; ?></option>
+                                                       <?php } ?>
+                                                   </select>
+                                                   <input type="text" name="dni" id = "dni_user" class="form-control" placeholder="DNI">
                                                 </div>
                                             </div>
                                         </div>
                                     <!---->
                                     <br>
-                                    <!--fecha de inicio y fin de la insidencia-->
+                                    <!--nombre y apellido de la persona-->
                                     <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-md-5">
                                                 <div class="input-group shadow">
-                                                    <label for="" class="input-group-text"><span class = "fas fa-fw fa-calendar"></span></label>
-                                                    <input type="text" id ="fec_ini" name="fec_ini" class="form-control" placeholder="__/__/____">
+                                                    <label for="" class="input-group-text"><span class = "fas fa-fw fa-user"></span></label>
+                                                    <input type="text" name="nom" class="form-control" placeholder="NOMBRE">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-5">
                                                 <div class="input-group shadow">
-                                                    <label for="" class="input-group-text"><span class = "fas fa-fw fa-calendar"></span></label>
-                                                    <input type="text" id ="fec_fin" name="fec_fin" class="form-control" placeholder="__/__/____">
+                                                    <label for="" class="input-group-text"><span class = "fas fa-fw fa-user"></span></label>
+                                                    <input type="text" name="ape" class="form-control" placeholder="APELLIDO">
                                                 </div>
                                             </div>
                                         </div>
                                     <!---->
                                     <br>
-                                    <!--Descripcion de la insidencia-->
-                                    <div class="row clearfix d-flex justify-content-center">
-                                            <div class="col-md-10">
-                                                <div class="input-group shadow">
-                                                    <label for="" class="input-group-text"><span class = "fas fa-fw fa-list"></span></label>
-                                                    <textArea class="form-control" rows="3" cols="1" name="description">
-
-                                                    </textArea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <!---->
-
+                                    
+                                    
                                     <!--fecha de inicio y fin de la insidencia-->
                                     <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-md-5">
                                                 <div class="input-group mb-3">
-                                                    <label class="input-group-text" for="inputGroupSelect01"><span class = "fas fa-fw fa-user"></span></label>
-                                                    <select class="form-select" id="user_select" name="user_select">
-                                                        <option value="0">SELECCIONAR USUARIO</option>
-                                                        <?php foreach($usuarios as $usr){ ?>
-                                                            <?php if($usr->id_rol_fk == 1 || $usr->id_rol_fk == 3){ ?>
-                                                                <option value="<?php echo $usr->id?>"><?php echo $usr->usuario?></option>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <label class="input-group-text" for="inputGroupSelect01"><span class = "fas fa-fw fa-envelope"></span></label>
+                                                    <input type="text" name="mail" id="mail" class="form-control" placeholder="XX@XX.com">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-5">
                                                 <div class="input-group mb-3">
-                                                    <label class="input-group-text" for="inputGroupSelect02"><span class = "fas fa-fw fa-user"></span></label>
-                                                    <select class="form-select" id="client_select" name="client_select">
-                                                        <option value="0">SELECCIONAR CLIENTE</option>
-                                                        <?php foreach($usuarios as $usr){ ?>
-                                                            <?php if($usr->id_rol_fk == 2){ ?>
-                                                                <option value="<?php echo $usr->id?>"><?php echo $usr->usuario?></option>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </select>
+                                                    <label class="input-group-text" for="inputGroupSelect02"><span class = "fas fa-fw fa-phone"></span></label>
+                                                   <input type="text" name="telf" id="telf" class="form-control" placeholder="XXXX-XXXXXXX">
                                                 </div>
                                             </div>
                                         </div>
                                     <!---->
                                     <br>
 
-                                    <!--Estatus de la insidencia-->
-                                        <div class="row clearfix d-flex justify-content-center">
-                                            <div class="col-md-10">
-                                                <select name="estatus_select" class="form-select p-2 w-100">
-                                                    <option value="0" selected>SELECCIONE ESTATUS</option>
-                                                    <?php foreach ($status as $sts) { ?>
-                                                        <option value="<?php echo $sts->id?>"><?php echo $sts->denominacion; ?></option>
-                                                    <?php } ?>
+                                     <div class="row clearfix d-flex justify-content-center">
+                                        <div class="col-md-10">
+                                            <div class="input-group shadow">
+                                                <label for="" class="input-group-text"><span class = "fas fa-fw fa-list"></span></label>
+                                               <textarea class="form-control" rows="3" cols="0" name="dir">
+                                                   
+                                               </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     <div class="row clearfix d-flex justify-content-center">
+                                        <div class="col-md-6">
+                                            <div class="input-group shadow">
+                                                <label for="" class="input-group-text"><span class = "fas fa-fw fa-calendar"></span></label>
+                                                <input type="text" name="fec_nac" id="fec_nac" class="form-control" placeholder = " fecha de nacimiento"required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <!--fecha de inicio y fin de la insidencia-->
+                                    <div class="row clearfix d-flex justify-content-center">
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <label class="input-group-text" for="inputGroupSelect01"><span class = "fas fa-fw fa-user-circle"></span></label>
+                                                    <input type="text" name="user" id="user" class="form-control" placeholder="NOMBRE DE USUARIO">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-5">
+                                                <div class="input-group mb-3">
+                                                    <label class="input-group-text" for="inputGroupSelect02"><span class = "fas fa-fw fa-lock"></span></label>
+                                                   <input type="text" name="pass" id="telf" class="form-control" placeholder="CLAVE">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!---->
+                                     <br>
+                                     <div class="row clearfix d-flex justify-content-center">
+                                        <div class="col-md-6">
+                                            <div class="input-group shadow">
+                                                
+                                                <select name="rol-select" id="" class="form-select w-100">
+                                                    <option value="1">ADMINISTRADOR</option>
+                                                    <option value="2">CLIENTE</option>
+                                                    <option value="3">SOPORTE TECNICO</option>
                                                 </select>
                                             </div>
                                         </div>
-                                    <!---->
-
+                                    </div>
                                     <br>
+
                                     <!--Boton de registro-->
                                     <div class="row clearfix d-flex justify-content-center">
                                             <div class="col-md-10">
@@ -167,20 +187,18 @@
     <!-- Custom scripts for all pages-->
     <script src="<?php echo base_url();?>assets/vendor/datepicket/js/bootstrap-material-datetimepicker.js"></script>
     <!-- Custom scripts for all pages-->
-    <script src="<?php echo base_url();?>assets/system/jsTickets.js"></script>
+    <script src="<?php echo base_url();?>assets/vendor/inputmask/dist/jquery.inputmask.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="<?php echo base_url();?>assets/system/jsUsuarios.js"></script>
 
     <script>
-        $('#fec_ini').bootstrapMaterialDatePicker({ 
-            weekStart : 0, 
-            time: false,
-            format: 'DD/MM/YYYY' 
-        });
-        $('#fec_fin').bootstrapMaterialDatePicker({ 
+        $('#fec_nac').bootstrapMaterialDatePicker({ 
             weekStart : 0, 
             time: false,
             format: 'DD/MM/YYYY' 
         });
     </script>
+
 
 </body>
 

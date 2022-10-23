@@ -93,7 +93,7 @@ class Tickets extends CI_Controller {
 
 	public function index(){
 		$this->load->model("ticketsModel");
-		$this->load->model("Usuarios");
+		$this->load->model("usuariosModel");
 		####metodo para desplegar la pagina principal
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
@@ -112,8 +112,8 @@ class Tickets extends CI_Controller {
 			$tableString .= "<td><b>".$x->codigo."</b></td>";
 			$tableString .= "<td>".$x->titulo."</td>";
 			$tableString .= "<td>".$this->ticketsModel->set_sql_label($x->fecha_ini)."</td>";
-			$tableString .= "<td>".$this->Usuarios->get_name_user($x->id_usuario_solicitante)."</td>";
-			$tableString .= "<td>".$this->Usuarios->get_name_user($x->id_usuario_soporte)."</td>";
+			$tableString .= "<td>".$this->usuariosModel->get_name_user($x->id_usuario_solicitante)."</td>";
+			$tableString .= "<td>".$this->usuariosModel->get_name_user($x->id_usuario_soporte)."</td>";
 			$tableString .= "<td>".$this->set_btn_status($x->id_status_fk)."</td>";
 			$tableString .= "<td>".$this->setTicketsOptions($this->session->rol, $x->codigo)."</td>";
 			$tableString .= "</tr>";
@@ -131,7 +131,7 @@ class Tickets extends CI_Controller {
 		 * Funcion para ver detalles del ticket y ver formulario de insercion de observaciones
 		 * */
 		$this->load->model('ticketsModel');
-		$this->load->model('Usuarios');
+		$this->load->model('usuariosModel');
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
 		//$this->validate_session_menu($this->session->rol);
@@ -145,7 +145,7 @@ class Tickets extends CI_Controller {
 			"ticket"     =>  $this->ticketsModel->getTicketById($cod),
 			"estatus"    =>  $this->ticketsModel->getStatus(),
 			"historico"  =>  $this->ticketsModel->ticketHist($cod),
-			"usuarios"   =>  $this->Usuarios->getAll(),
+			"usuarios"   =>  $this->usuariosModel->getAll(),
 			"rol"        =>  $this->session->rol, // Rol de usuario.
 			"id_user"    =>  $this->session->id,  // id del usuario.
 			"nm_user"    =>  $this->session->usuario // nombre de usuario.

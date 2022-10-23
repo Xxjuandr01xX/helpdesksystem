@@ -26,13 +26,13 @@ class Login extends CI_Controller {
 		/**
 		 * funcion para verificar datos de usuario y redireccionar a la session.
 		 **/
-		$this->load->model('Usuarios');
+		$this->load->model('usuariosModel');
 		$usuario   = $this->input->post('user_name');
 		$password  = $this->input->post('user_pass');
 		$resp      = "";
-		$db_result_rows = $this->Usuarios->get_data_user($usuario, $password)->num_rows();
+		$db_result_rows = $this->usuariosModel->get_data_user($usuario, $password)->num_rows();
 		if($db_result_rows == 1){
-			foreach($this->Usuarios->get_data_user($usuario, $password)->result() as $data){
+			foreach($this->usuariosModel->get_data_user($usuario, $password)->result() as $data){
 				$data_user = array(
 					"id"		=> $data->id,
 					"usuario"	=> $data->usuario,
