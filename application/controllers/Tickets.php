@@ -123,6 +123,7 @@ class Tickets extends CI_Controller {
 		$this->load->view('tickets/list',[
 			"pagina"  => "GESTION DE TICKETS",
 			"tickets" => $resultSet,
+			"chart"   => $this->ticketsModel->getArrayTicket($this->session->id, $this->session->rol)
 		]);
 	}
 

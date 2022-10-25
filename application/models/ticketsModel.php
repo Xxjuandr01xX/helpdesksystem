@@ -214,5 +214,37 @@
             }
         }
 
+        public function getArrayTicket($usuario, $rol_usuario){
+            /**
+             * Funcion para devolver array con cantidad de tickets.
+             * */
+            $resultSet = array();
+
+            if($rol_usuario == 1){
+                $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 1";
+                $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 2";
+                $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 3";
+                $asignado = "SELECT COUNT(*) as 'asg' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 4";
+                $rs1 = $this->db->query($abiertos)->result();
+                $rs2 = $this->db->query($cerrado)->result();
+                $rs3 = $this->db->query($resuelto)->result();
+                $rs4 = $this->db->query($asignado)->result();
+
+                return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
+            }else{
+                $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE a.id_usuario_soporte = '$usuario' AND b.id=1;";
+                $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE a.id_usuario_soporte = '$usuario' AND b.id=2;";
+                $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE a.id_usuario_soporte = '$usuario' AND b.id=3;";
+                $asignado = "SELECT COUNT(*) as 'asg' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE a.id_usuario_soporte = '$usuario' AND b.id=4;";
+
+                $rs1 = $this->db->query($abiertos)->result();
+                $rs2 = $this->db->query($cerrado)->result();
+                $rs3 = $this->db->query($resuelto)->result();
+                $rs4 = $this->db->query($asignado)->result();
+
+                return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
+            }
+        }
+
 	}
 ?>
