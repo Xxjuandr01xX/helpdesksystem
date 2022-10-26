@@ -45,7 +45,8 @@
                 <div id="collapseReportes" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="<?php echo base_url(); ?>index.php/usuarios/new">GENERAR REPORTE</a>
+                        <a class="collapse-item" href="<?php echo base_url(); ?>index.php/CharAndReports/index">REPORTE DE INSIDENCIAS</a>
+                        <a class="collapse-item" href="<?php echo base_url(); ?>index.php/CharAndReports/index">REPORTE GENERAL</a>
                     </div>
                 </div>
             </li>
