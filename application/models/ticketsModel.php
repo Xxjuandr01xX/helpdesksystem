@@ -214,6 +214,19 @@
             }
         }
 
+        public function getTableTickets($fecha_inicio, $fecha_fin){
+            $ini = $this->set_date_sql($fecha_inicio);
+            $fin = $this->set_date_sql($fecha_fin);
+            return $this->db->query("select a.id       as 'id_ticket',
+                                           a.codigo    as 'code',
+                                           c.nombre    as 'nom',
+                                           c.apellido  as 'ape',
+                                           a.titulo    as 'tit',
+                                           a.fecha_ini as 'ini',
+                                           a.fecha_fin as 'fim'
+                                    from hlp_ticket a left join hlp_usuarios b on a.id_usuario_solicitante=b.id left join hlp_personas c on b.id_persona_fk=c.id where a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
+        }
+
         public function getArrayTicket($usuario, $rol_usuario){
             /**
              * Funcion para devolver array con cantidad de tickets.

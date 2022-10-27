@@ -55,6 +55,10 @@ class CharAndReports extends CI_Controller {
 	public function ticketsDetalle(){
 		$this->load->model("ticketsModel");
 		$this->load->model("usuariosModel");
+
+		$fecha_inicio = $this->input->post('ini');
+		$fecha_fin    = $this->input->post('fin');
+
 		####metodo para desplegar la pagina principal
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
@@ -65,7 +69,21 @@ class CharAndReports extends CI_Controller {
 		]);
 		$this->load->view('reports/filter', [
 			"pagina" => "REPORTES DE INSIDENCIAS",
-			"table"  => "111111111"
+			"table"  => $this->ticketsModel->getTableTickets($fecha_inicio, $fecha_fin)
 		]);
+	}
+
+	public function pdfTickets($cod){
+		/**
+		 * Aqui se imprime el reporte
+		 * */
+		//Se agrega la clase desde thirdparty para usar FPDF
+	     require_once APPPATH.'third_party/fpdf/fpdf.php';
+	        
+	     $pdf = new FPDF();
+	     $pdf->AddPage('P','A4',0);
+	     $pdf->SetFont('Arial','B',16);
+	     $pdf->Cell(0,0,'Hola mundo FPDF desde Codeigniter',0,1,'C');
+	     $pdf->Output('paginaEnBlanco.pdf' , 'I' );
 	}
 }
