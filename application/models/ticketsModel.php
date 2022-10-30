@@ -90,6 +90,12 @@
             ])->result();
         }
 
+        public function getTicketReporte($id){
+            return $this->db->get_where('hlp_ticket',[
+                "id" => $id
+            ])->result();
+        }
+
         public function ticketHist($cod){
             $id_ticket_fk = '';
             foreach($this->getTicketById($cod) as $tk){
@@ -97,6 +103,12 @@
             }
             return $this->db->get_where('hlp_ticket_historico', [
                 "id_ticket_fk" => $id_ticket_fk
+            ])->result();
+        }
+
+        public function ticketHistReporte($id){
+            return $this->db->get_where('hlp_ticket_historico', [
+                "id_ticket_fk" => $id
             ])->result();
         }
 
@@ -182,6 +194,14 @@
             }
         }
 
+        public function getTicketsTable($usuario, $rol, $inicio, $fin){
+            if($rol == 1){
+                return $this->db->query("select * from hlp_ticket where fecha_ini BETWEEN '".$this->set_date_sql($inicio)."' AND '".$this->set_date_sql($fin)."'");
+            }else if($rol == 3){
+                return $this->db->query("select * from hlp_ticket where id_usuario_soporte = '$usuario' AND fecha_ini BETWEEN '".$this->set_date_sql($inicio)."' AND '".$this->set_date_sql($fin)."'");
+            }
+        }
+
         public function ticket_update($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client,$sts, $cod){
             $id_ticket = '';
             foreach($this->db->get_where('hlp_ticket', ["codigo" => $cod])->result() as $ticket){
@@ -214,10 +234,11 @@
             }
         }
 
-        public function getTableTickets($fecha_inicio, $fecha_fin){
+        public function getTableTickets($fecha_inicio, $fecha_fin, $rol, $idUsuario){
             $ini = $this->set_date_sql($fecha_inicio);
             $fin = $this->set_date_sql($fecha_fin);
-            return $this->db->query("select a.id       as 'id_ticket',
+            if($rol == 1){
+                return $this->db->query("select a.id       as 'id_ticket',
                                            a.codigo    as 'code',
                                            c.nombre    as 'nom',
                                            c.apellido  as 'ape',
@@ -225,7 +246,67 @@
                                            a.fecha_ini as 'ini',
                                            a.fecha_fin as 'fim'
                                     from hlp_ticket a left join hlp_usuarios b on a.id_usuario_solicitante=b.id left join hlp_personas c on b.id_persona_fk=c.id where a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
+            }else{
+                return $this->db->query("select a.id       as 'id_ticket',
+                                           a.codigo    as 'code',
+                                           c.nombre    as 'nom',
+                                           c.apellido  as 'ape',
+                                           a.titulo    as 'tit',
+                                           a.fecha_ini as 'ini',
+                                           a.fecha_fin as 'fim'
+                                    from hlp_ticket a left join hlp_usuarios b on a.id_usuario_solicitante=b.id left join hlp_personas c on b.id_persona_fk=c.id where b.id ='".$idUsuario."' AND a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
+            }
         }
+
+        public function getArrayChartReport($usuario, $rol_usuario, $inicio, $fin){
+            /**
+             * Funcion para devolver array con cantidad de tickets.
+             * */
+            $resultSet = array();
+            $ini = $this->set_date_sql($inicio);
+            $final = $this->set_date_sql($fin);
+            $client    = "WHERE a.id_usuario_solicitante = '".$usuario."' AND b.id=1 AND fecha_ini BETWEEN '".$this->set_date_sql($inicio)."' AND '".$this->set_date_sql($fin)."';";
+            $encargado    = "WHERE a.id_usuario_soporte = '".$usuario."' AND b.id=1 AND fecha_ini BETWEEN '".$this->set_date_sql($inicio)."' AND '".$this->set_date_sql($fin)."';";
+
+            if($rol_usuario == 1){
+                $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 1 AND a.fecha_ini BETWEEN '$ini' AND '$final'";
+                $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 2 AND a.fecha_ini BETWEEN '$ini' AND '$final'";
+                $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 3 AND a.fecha_ini BETWEEN '$ini' AND '$final'";
+                $asignado = "SELECT COUNT(*) as 'asg' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id WHERE b.id = 4 AND a.fecha_ini BETWEEN '$ini' AND '$final'";
+                $rs1 = $this->db->query($abiertos)->result();
+                $rs2 = $this->db->query($cerrado)->result();
+                $rs3 = $this->db->query($resuelto)->result();
+                $rs4 = $this->db->query($asignado)->result();
+
+                return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
+            }else if($rol == 2){
+                $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
+                $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
+                $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
+                $asignado = "SELECT COUNT(*) as 'asg' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
+
+                $rs1 = $this->db->query($abiertos)->result();
+                $rs2 = $this->db->query($cerrado)->result();
+                $rs3 = $this->db->query($resuelto)->result();
+                $rs4 = $this->db->query($asignado)->result();
+
+                return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
+            }else if($rol == 3){
+                $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
+                $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
+                $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
+                $asignado = "SELECT COUNT(*) as 'asg' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
+
+                $rs1 = $this->db->query($abiertos)->result();
+                $rs2 = $this->db->query($cerrado)->result();
+                $rs3 = $this->db->query($resuelto)->result();
+                $rs4 = $this->db->query($asignado)->result();
+
+                return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
+            }
+        }
+
+       
 
         public function getArrayTicket($usuario, $rol_usuario){
             /**

@@ -86,6 +86,8 @@
             }
         }
 
+        
+
         public function getDataUsuarioById($id){
             /**
              * Funcion para devolder datos de usuario y persona conel id del usuario.
@@ -140,6 +142,12 @@
             }else{
                 return false;
             }
+        }
+
+        public function getDataPersonaById($id){
+            return $this->db->get_where('hlp_personas',[
+                "id" => $id
+            ])->result();
         }
 
         public function save($nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
