@@ -11,6 +11,9 @@ class Usuarios extends CI_Controller {
 		$this->load->helper(array(
 			"form" => "url"
 		));
+		if(!isset($this->session->id)){
+			redirect('/login/index/');
+		}
 	}
 
 	public function setMenuRol($rol){
@@ -127,9 +130,12 @@ class Usuarios extends CI_Controller {
 		$user 			= $this->input->post('user');
 		$pass 			= $this->input->post('pass');
 		$rol 			= $this->input->post('rol-select');
+		$dni            = $this->input->post('dni');
 
 		if($nacionalidad == 0){
 			$this->warning_alert("Debe de Seleccionar una nacionalidad !");
+		}else if($dni == '' || $dni == NULL){
+			$this->warning_alert("Debe escribir el dni ! ");
 		}else if($nombre == '' || $nombre == NULL){
 			$this->warning_alert("Debe de escribir su nombre ! ");
 		}else if($apellido == '' || $apellido == NULL){
@@ -150,7 +156,7 @@ class Usuarios extends CI_Controller {
 			$this->warning_alert("Debe de indicar la permisologia del usuario ! ");
 		}else{
 			$this->load->model('usuariosModel');
-			if($this->usuariosModel->user_update($cod, $nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol) == true){
+			if($this->usuariosModel->user_update($cod, $dni, $nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol) == true){
 				$this->index();
 			}else{
 				$this->warning_alert("Error al Actualizar usuario en el sistema");
@@ -217,9 +223,12 @@ class Usuarios extends CI_Controller {
 		$user 			= $this->input->post('user');
 		$pass 			= $this->input->post('pass');
 		$rol 			= $this->input->post('rol-select');
+		$dni            = $this->input->post('dni');
 
 		if($nacionalidad == 0){
 			$this->warning_alert("Debe de Seleccionar una nacionalidad !");
+		}else if($dni == '' || $dni == NULL){
+			$this->warning_alert("Debe escribir su dni");
 		}else if($nombre == '' || $nombre == NULL){
 			$this->warning_alert("Debe de escribir su nombre ! ");
 		}else if($apellido == '' || $apellido == NULL){
@@ -240,7 +249,7 @@ class Usuarios extends CI_Controller {
 			$this->warning_alert("Debe de indicar la permisologia del usuario ! ");
 		}else{
 			$this->load->model('usuariosModel');
-			if($this->usuariosModel->save($nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol) == true){
+			if($this->usuariosModel->save($nacionalidad, $dni, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol) == true){
 				$this->index();
 			}else{
 				$this->warning_alert("Error al registrar usuario al sistema ");

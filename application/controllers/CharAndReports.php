@@ -12,6 +12,9 @@ class CharAndReports extends CI_Controller {
 		$this->load->helper(array(
 			"form" => "url"
 		));
+		if(!isset($this->session->id)){
+			redirect('/login/index/');
+		}
 	}
 
 	public function setMenuRol($rol){

@@ -13,6 +13,9 @@ class Tickets extends CI_Controller {
 		$this->load->helper(array(
 			"form" => "url"
 		));
+		if(!isset($this->session->id)){
+			redirect('/login/index/');
+		}
 	}
 
 	public function set_border_row($id_status){
@@ -105,7 +108,7 @@ class Tickets extends CI_Controller {
 		####Pasando datos a la vista para la tabla de tickets
 		$i = 0;
 		$resultSet = [];
-		foreach ($this->ticketsModel->get_data_tickets()->result() as $x) {
+		foreach ($this->ticketsModel->get_data_tickets($this->session->id, $this->session->rol)->result() as $x) {
 			$tableString = "<tr>";
 			$i++;
 			$tableString .= "<td class = '".$this->set_border_row($x->id_status_fk)."'><b>".$i."</b></td>";

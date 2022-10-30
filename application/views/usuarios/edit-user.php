@@ -107,7 +107,7 @@
                                             <div class="col-md-5">
                                                 <div class="input-group mb-3">
                                                     <label class="input-group-text" for="inputGroupSelect02"><span class = "fas fa-fw fa-lock"></span></label>
-                                                   <input type="text" name="pass" id="telf" class="form-control" placeholder="CLAVE">
+                                                   <input type="password" name="pass" id="telf" class="form-control" placeholder="CLAVE">
                                                 </div>
                                             </div>
                                         </div>

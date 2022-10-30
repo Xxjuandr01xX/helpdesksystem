@@ -48,7 +48,6 @@
                                         </button>
                                     </form>
                                         <hr>
-                                        <a href="#" class="text-center">Registrarse</a>
                                 </div>
                             </div>
                         </div>

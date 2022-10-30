@@ -106,7 +106,7 @@
                                     FROM hlp_usuarios a LEFT JOIN hlp_personas b  ON a.id_persona_fk=b.id INNER JOIN hlp_roles c ON a.id_rol_fk=c.id WHERE a.id = '$id'")->result();
         }
 
-        public function user_update($cod, $nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
+        public function user_update($cod, $dni, $nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
             /**
              * Funcion para actualizar informacion de usuario en la base de datos.
              * */
@@ -118,15 +118,16 @@
             }
 
             $update_persona = $this->db->update('hlp_personas', [
-                "id_nacionalidad_fk" => $nacionalidad,
-                "nombre" => $nombre,
-                "apellido" => $apellido,
-                "correo" => $correo,
-                "telefono" => $telefono,
-                "direccion" => $direccion,
-                "fec_nac" => $fec_nac
+                "id_nacionalidad_fk"    =>  $nacionalidad,
+                "dni"                   =>  $dni,
+                "nombre"                =>  $nombre,
+                "apellido"              =>  $apellido,
+                "correo"                =>  $correo,
+                "telefono"              =>  $telefono,
+                "direccion"             =>  trim($direccion),
+                "fec_nac"               =>  $fec_nac
             ],[
-                "id" => $id_persona_fk
+                "id"                    =>  $id_persona_fk
             ]);
 
             $update_usuario = $this->db->update('hlp_usuarios', [
@@ -150,19 +151,20 @@
             ])->result();
         }
 
-        public function save($nacionalidad, $nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
+        public function save($nacionalidad, $dni,$nombre, $apellido, $correo, $telefono, $direccion, $fec_nac, $user, $pass, $rol){
         	/**
         	 * Funcion para agregar datos a tablas hlp_personas y hlp_usuarios
         	 * */
         	$insert_personas = $this->db->insert('hlp_personas',[
         		"id" 				 => NULL,
         		"id_nacionalidad_fk" => $nacionalidad,
+                "dni"                => $dni,
         		"nombre" 			 => $nombre,
         		"apellido" 			 => $apellido,
         		"correo" 			 => $correo,
         		"telefono" 			 => $telefono,
-        		"direccion" 		 => $direccion,
-        		"fec_nac" 			 => set_date_sql($fec_nac)
+        		"direccion" 		 => trim($direccion),
+        		"fec_nac" 			 => $this->set_date_sql($fec_nac)
         	]);
 
         	$insert_usuarios = $this->db->insert('hlp_usuarios', [

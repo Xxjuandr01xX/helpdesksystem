@@ -13,6 +13,7 @@ class Login extends CI_Controller {
 		);
 		$this->load->helper($helper_elements);
 		$this->load->library('session');
+		
 	}
 
 	public function index(){
@@ -44,5 +45,10 @@ class Login extends CI_Controller {
 		}else{
 			$this->index();
 		}
+	}
+
+	public function log_out(){
+		$this->session->sess_destroy();
+		redirect('/login/index/');
 	}
 }

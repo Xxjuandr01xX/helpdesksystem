@@ -79,9 +79,19 @@
             }
         }
 
-        public function get_data_tickets(){
+        public function get_data_tickets($usuario, $rol){
             ##Funcion para devolver datos de la tabla hlp_tickets
-            return $this->db->get('hlp_ticket');
+            if($rol == 1){
+                return $this->db->get('hlp_ticket');
+            }else if($rol == 2){
+                return $this->db->get_where('hlp_ticket', [
+                    "id_usuario_solicitante" => $usuario
+                ]);
+            }else if($rol == 3){
+                return $this->db->get_where('hlp_ticket', [
+                    "id_usuario_soporte" => $usuario
+                ]);
+            }
         }
 
         public function getTicketById($cod){
