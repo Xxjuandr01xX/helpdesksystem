@@ -39,7 +39,7 @@
                                             <!--FIN-->
                                             <div class="row clearfix d-flex justify-content-center">
                                                 <div class="col-md-5">
-                                                    <button class="btn btn-primary rounded-0 shadow w-100">
+                                                    <button type = "submit" class="btn btn-primary rounded-0 shadow w-100">
                                                         <span class="fa fa-print"></span>
                                                         GENERAR REPORTE
                                                     </button>

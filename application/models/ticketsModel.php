@@ -147,7 +147,7 @@
                     "username"      => $username,
                     "id_ticket_fk"  => $id_ticket_fk,
                     "fech_modi"     => $this->set_date_sql($fecha_modi),
-                    "hora_modi"     => time(),
+                    "hora_modi"     => date('h:i:s', strtotime(time())),
                     "id_status_fk"  => $estatus,
                     "observacion"   => $observation
                 ]);
@@ -157,7 +157,7 @@
                     "username"      => $username,
                     "id_ticket_fk"  => $id_ticket_fk,
                     "fech_modi"     => $this->set_date_sql($fecha_modi),
-                    "hora_modi"     => time('H:i:s'),
+                    "hora_modi"     => date('h:i:s', strtotime(time())),
                     "id_status_fk"  => $estatus,
                     "observacion"   => $observation
                 ]);
@@ -190,7 +190,7 @@
 
             $insert_ticket_history = $this->db->insert('hlp_ticket_historico', [
                 "id"                   =>       NULL,
-                "id_ticket_fk"         =>       $this->db->insert_id,
+                "id_ticket_fk"         =>       $this->db->insert_id(),
                 "fech_modi"            =>       date('d/m/Y'),
                 'hora_modi'            =>       time(),
                 "id_status_fk"         =>       $sts,
@@ -256,7 +256,7 @@
                                            a.fecha_ini as 'ini',
                                            a.fecha_fin as 'fim'
                                     from hlp_ticket a left join hlp_usuarios b on a.id_usuario_solicitante=b.id left join hlp_personas c on b.id_persona_fk=c.id where a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
-            }else{
+            }else if($rol == 2 ){
                 return $this->db->query("select a.id       as 'id_ticket',
                                            a.codigo    as 'code',
                                            c.nombre    as 'nom',
@@ -265,6 +265,15 @@
                                            a.fecha_ini as 'ini',
                                            a.fecha_fin as 'fim'
                                     from hlp_ticket a left join hlp_usuarios b on a.id_usuario_solicitante=b.id left join hlp_personas c on b.id_persona_fk=c.id where b.id ='".$idUsuario."' AND a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
+            }else if($rol == 3){
+                return $this->db->query("select a.id       as 'id_ticket',
+                                           a.codigo    as 'code',
+                                           c.nombre    as 'nom',
+                                           c.apellido  as 'ape',
+                                           a.titulo    as 'tit',
+                                           a.fecha_ini as 'ini',
+                                           a.fecha_fin as 'fim'
+                                    from hlp_ticket a left join hlp_usuarios b on a.id_usuario_soporte=b.id left join hlp_personas c on b.id_persona_fk=c.id where b.id ='".$idUsuario."' AND a.fecha_ini BETWEEN '".$ini."' AND '".$fin."'")->result();
             }
         }
 
@@ -289,7 +298,7 @@
                 $rs4 = $this->db->query($asignado)->result();
 
                 return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
-            }else if($rol == 2){
+            }else if($rol_usuario == 2){
                 $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
                 $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
                 $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$client;
@@ -301,7 +310,7 @@
                 $rs4 = $this->db->query($asignado)->result();
 
                 return [$rs1[0]->abr,$rs2[0]->cer,$rs3[0]->res,$rs4[0]->asg];
-            }else if($rol == 3){
+            }else if($rol_usuario == 3){
                 $abiertos = "SELECT COUNT(*) as 'abr' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
                 $cerrado  = "SELECT COUNT(*) as 'cer' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;
                 $resuelto = "SELECT COUNT(*) as 'res' FROM hlp_ticket a INNER JOIN hlp_ticket_status b ON a.id_status_fk=b.id ".$encargado;

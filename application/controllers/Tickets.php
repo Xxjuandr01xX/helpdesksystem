@@ -84,10 +84,16 @@ class Tickets extends CI_Controller {
 						"<a href = '".base_url()."index.php/tickets/rm_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-trash-alt'></a>".
 						"<a href = '".base_url()."index.php/tickets/edit_ticket/".$ticket."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
 					"</div>";
-		}else if($rol == 2 || $rol == 3){
-			// rol para usuario soporte tecnico y clientes
+		}else if($rol == 3){
+			// rol para usuario soporte tecnico.
 			return "<div class='btn-group rounded-pill'>".
-					"<a href = '".base_url()."index.php/tickets/hist_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
+						"<a href = '".base_url()."index.php/tickets/hist_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
+						"<a href = '".base_url()."index.php/tickets/edit_ticket/".$ticket."'class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-edit'></a>".
+					"</div>";
+		}else if($rol == 2 ){
+			// rol para clientes
+			return "<div class='btn-group rounded-pill'>".
+						"<a href = '".base_url()."index.php/tickets/hist_ticket/".$ticket."' class = 'btn btn-sm btn-secondary'><span class='fas fa-fw fa-bahai'></a>".
 					"</div>";
 		}else{
 			return "NULL";
@@ -139,7 +145,7 @@ class Tickets extends CI_Controller {
 		$this->load->view('dashboard/head', ["titulo"=>"DEPARTAMENTO TI "]);
 		$this->load->view('dashboard/sidebar');
 		//$this->validate_session_menu($this->session->rol);
-		$this->load->view('dashboard/menuAdministrador');
+		$this->load->view($this->setMenuRol($this->session->rol));
 		$this->load->view('dashboard/topbar',[
 			"username" => $this->session->usuario,
 		]);
@@ -177,7 +183,7 @@ class Tickets extends CI_Controller {
 		}else if($username == 0){
 			$this->alert_window('warning', 'Asegurece seleccionar un usuario', 'info-fill', 'Warning');
 		}else{
-			if($this->ticketsModel->add_observation($cod, $observacion, $fecha_modi, $estatus, $username) == true){
+			if($this->ticketsModel->add_observation($cod, $observacion, $fecha_modi, $estatus, $this->session->usuario) == true){
 				$this->index();
 			}else{
 				$this->alert_window('danger', 'Error al agregar observacion', 'info-fill', 'Danger');
@@ -233,7 +239,7 @@ class Tickets extends CI_Controller {
 			$this->alert_window('warning', 'Eliga un estatus para el soporte !', 'info-fill', 'Warning');
 		}else{
 			if($this->ticketsModel->ticket_update($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client, $sts, $cod) == true){
-				$this->index();
+				redirect('/tickets/index/');
 			}else{
 				$this->alert_window('danger', 'Error al ingresar datos, por favor vuelva a intentar', 'exclamation-triangle-fill', 'Danger');
 			}
@@ -263,7 +269,7 @@ class Tickets extends CI_Controller {
 		 * */
 		$this->load->model('ticketsModel');
 		if($this->ticketsModel->drop($cod) == true){
-			$this->index();
+			redirect('/tickets/index/');
 		}else{
 			$this->alert_window('danger', 'Error al eliminar ticket', 'info-fill', 'Danger');
 		}
@@ -300,7 +306,7 @@ class Tickets extends CI_Controller {
 			$this->alert_window('warning', 'Eliga un estatus para el soporte !', 'info-fill', 'Warning');
 		}else{
 			if($this->ticketsModel->save($titulo, $fec_ini, $fec_fin, $descripcion, $user, $client, $sts) == true){
-				$this->index();
+				redirect('/tickets/index/');
 			}else{
 				$this->alert_window('danger', 'Error al ingresar datos, por favor vuelva a intentar', 'exclamation-triangle-fill', 'Danger');
 			}

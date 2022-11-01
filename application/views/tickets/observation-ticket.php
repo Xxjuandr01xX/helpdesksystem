@@ -128,7 +128,7 @@
                                             <div class="row clearfix d-flex justify-content-center">
                                                 <div class="col-sm-10">
                                                     <div class="input-group">
-                                                        <select name="user_name" class="form-select" disabled>
+                                                        <select name="user_name" class="form-select" focus>
                                                                 <option value="<?php echo $id_user; ?>"><?php echo $nm_user; ?></option>
                                                         </select>
                                                     </div>
