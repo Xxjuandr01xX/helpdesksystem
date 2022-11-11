@@ -231,7 +231,7 @@
             $insert_ticket_history = $this->db->insert('hlp_ticket_historico', [
                 "id"                    =>      NULL,
                 "id_ticket_fk"          =>      $id_ticket,
-                "fech_modi"            =>       set_date_sql(date('d/m/Y')),
+                "fech_modi"            =>       $this->set_date_sql(date('d/m/Y')),
                 'hora_modi'            =>       time(),
                 "id_status_fk"         =>       $sts,
                 "observacion"          =>       "ACTUALIZACION DE INFORMACION"
