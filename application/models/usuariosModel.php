@@ -71,7 +71,7 @@
              * Funcion para afectar la tabla de hlp_nacionalidades.
              * */
 
-            foreach($this->get_where('hlp_usuarios', ["cod_nac" => $cod])->result() as $nac){
+            foreach($this->db->get_where('hlp_usuarios', ["cod_nac" => $cod])->result() as $nac){
                 if($cod == $nac->cod_nac){
                     return false;
                 }else{
