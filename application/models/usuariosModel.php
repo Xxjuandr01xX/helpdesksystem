@@ -70,20 +70,13 @@
             /**
              * Funcion para afectar la tabla de hlp_nacionalidades.
              * */
-
-            foreach($this->db->get_where('hlp_usuarios', ["cod_nac" => $cod])->result() as $nac){
-                if($cod == $nac->cod_nac){
-                    return false;
-                }else{
-                     return $this->db->insert('hlp_nacionalidades', [
-                        "id"           => NULL,
-                        "cod_nac"      => $cod,
-                        "cod_tel"      => $phone,
-                        "descripcion"  => $des,
-                        "cod"          => $doc
-                    ]);
-                }
-            }
+             return $this->db->insert('hlp_nacionalidades', [
+                "id"           => NULL,
+                "cod_nac"      => $cod,
+                "cod_tel"      => $phone,
+                "descripcion"  => $des,
+                "cod"          => $doc
+            ]);
         }
 
         
