@@ -66,7 +66,7 @@
                                                                 <td><?php echo $nac->cod_tel; ?></td>
                                                                 <td>
                                                                    <div class="btn-group">
-                                                                       <a href="<?php echo base_url(); ?>index.php/usuarios/eliminar_nac/<?php $nac->id; ?>?>" class="btn btn-sm btn-danger rounded-0"><span class="fa fa-trash"></span></a>
+                                                                       <a href="<?php echo base_url(); ?>index.php/usuarios/eliminar_nac/<?php echo $nac->id; ?>" class="btn btn-sm btn-danger rounded-0"><span class="fa fa-trash"></span></a>
                                                                    </div>
                                                                 </td>
                                                             </tr>

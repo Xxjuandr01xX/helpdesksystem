@@ -50,6 +50,15 @@ class Usuarios extends CI_Controller {
 		]);
 	}
 
+	public function eliminar_nac($cod){
+		$this->load->model('usuariosModel');
+		if($this->usuariosModel->drop_nac($cod) == true){
+			$this->nac_form();
+		}else{
+			$this->warning_alert("Error al eliminar usuario de la DB. ");
+		}
+	}
+
 	public function save_nac(){
 		/**
 		 *  funcion para insertar informacion en la tabla de nacionalidades.

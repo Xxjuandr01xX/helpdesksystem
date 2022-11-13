@@ -79,6 +79,12 @@
             ]);
         }
 
+        public function drop_nac($cod){
+            return $this->db->delete('hlp_nacionalidades', [
+                "id" => $cod
+            ]);
+        }
+
         
 
         public function getDataUsuarioById($id){
